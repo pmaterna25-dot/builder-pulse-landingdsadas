@@ -348,7 +348,10 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 <div className="text-lg font-medium">Edytor</div>
                 <div className="flex items-center gap-2">
                   <button onClick={generateFromSelections} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Generuj</button>
+                  <button onClick={clearSelections} className="px-3 py-1 bg-slate-200 rounded text-sm">Odznacz</button>
+                  <button onClick={() => exportToCSVAndSave()} className="px-3 py-1 bg-amber-500 text-white rounded text-sm">Zapisz (.csv)</button>
                   <button onClick={() => { navigator.clipboard?.writeText(generatedText || ""); }} className="px-3 py-1 bg-slate-200 rounded text-sm">Kopiuj</button>
+                  <button onClick={() => setFolderOpen((s) => !s)} className="px-3 py-1 bg-slate-100 border rounded text-sm">Folder ({savedFiles.length})</button>
                 </div>
               </div>
 
@@ -359,6 +362,31 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 className="flex-1 w-full border rounded p-3 text-sm resize-none"
                 placeholder="Wygenerowany tekst pojawi się tutaj..."
               />
+
+              {folderOpen ? (
+                <div className="mt-3 border-t pt-3">
+                  <div className="text-sm font-medium mb-2">Folder plików</div>
+                  {savedFiles.length === 0 ? (
+                    <div className="text-xs text-slate-500">Brak zapisanych plików.</div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      {savedFiles.map((f) => (
+                        <div key={f.id} className="flex items-center justify-between bg-slate-50 p-2 rounded">
+                          <div className="text-sm">
+                            <div className="font-medium">{f.name}</div>
+                            <div className="text-xs text-slate-500">{new Date(f.createdAt).toLocaleString()}</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => downloadSavedFile(f)} className="px-2 py-1 bg-green-600 text-white rounded text-sm">Pobierz</button>
+                            <button onClick={() => { setGeneratedText(atob(f.dataUrl.split(',')[1])); setFolderOpen(false); }} className="px-2 py-1 bg-slate-200 rounded text-sm">Otwórz</button>
+                            <button onClick={() => removeSavedFile(f.id)} className="px-2 py-1 bg-red-500 text-white rounded text-sm">Usuń</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
