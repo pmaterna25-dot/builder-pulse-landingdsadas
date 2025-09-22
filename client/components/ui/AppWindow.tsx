@@ -384,9 +384,9 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
               {(mode === 'settings' || mode === 'home') ? (
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
                   {filtered.map(({item, idx}) => (
-                    <div key={idx} className={`mb-3 border rounded p-3 min-h-[100px] relative ${bgFor(item.color)}`}>
+                    <div key={idx} className={`mb-3 border rounded p-4 min-h-[140px] relative ${bgFor(item.color)}`}>
                       {mode === 'home' ? (
-                        <div className="absolute top-3 left-3 flex items-center gap-2">
+                        <div className="absolute top-4 left-4 flex items-center gap-2">
                           <label className="text-xs font-medium">Wpisz SU</label>
                           <input
                             type="number"
