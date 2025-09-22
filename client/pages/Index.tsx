@@ -14,7 +14,7 @@ export default function Index() {
     } catch (e) {
       // ignore
     }
-    return Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' }));
+    return Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue', umowaWystepujacaPrzy: false, umowaDodatkowaLuxmed: false, selectedSlots: [] }));
   });
 
   useEffect(() => {
