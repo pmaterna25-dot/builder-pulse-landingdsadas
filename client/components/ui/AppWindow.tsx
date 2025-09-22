@@ -384,7 +384,19 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                               </div>
                               <div className="ml-3 flex flex-col text-xs text-slate-700">
                                 <label className="flex items-center gap-2"><input type="checkbox" checked={!!item.umowaWystepujacaPrzy} onChange={(e) => handleChange(idx, 'umowaWystepujacaPrzy', e.target.checked)} /> <span>umowa występująca przy</span></label>
-                                <label className="flex items-center gap-2"><input type="checkbox" checked={!!item.umowaDodatkowaLuxmed} onChange={(e) => handleChange(idx, 'umowaDodatkowaLuxmed', e.target.checked)} /> <span>umowa dodatkowa LUXMED</span></label>
+                                {editingIndex === idx && item.umowaWystepujacaPrzy ? (
+                                  <select value={item.umowaWystepujacaPrzyRef ?? ''} onChange={(e) => {
+                                    const v = e.target.value === '' ? null : parseInt(e.target.value, 10);
+                                    handleChange(idx, 'umowaWystepujacaPrzyRef', v);
+                                  }} className="mt-1 text-sm border rounded px-2 py-1">
+                                    <option value="">Wybierz pozycję</option>
+                                    {items.map((opt, oi) => {
+                                      if (oi === idx) return null;
+                                      return <option key={oi} value={oi}>{(opt.label || `Nazwa umowy`) + ' - Pozycja ' + (oi+1)}</option>;
+                                    })}
+                                  </select>
+                                ) : null}
+                                <label className="flex items-center gap-2 mt-2"><input type="checkbox" checked={!!item.umowaDodatkowaLuxmed} onChange={(e) => handleChange(idx, 'umowaDodatkowaLuxmed', e.target.checked)} /> <span>umowa dodatkowa LUXMED</span></label>
                               </div>
                             </>
                           ) : (
