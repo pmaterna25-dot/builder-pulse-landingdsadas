@@ -41,37 +41,44 @@ export default function AppWindow({ mode = 'home' }: Props) {
                         <div className="text-xs text-slate-500 max-w-[65%] text-right">Za co odpowiada ten box — krótki opis.</div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 mt-3 items-center">
-                        <div className="flex flex-col items-center justify-center">
-                          <label className="block text-xs text-slate-600 mb-1">Opis umowy</label>
-                          <textarea
-                            value={item.description}
-                            onChange={(e) => handleChange(idx, 'description', e.target.value)}
-                            className="w-full h-20 border rounded px-2 py-1 text-sm text-center resize-none"
-                            placeholder={`Opis umowy dla pozycji ${idx + 1}`}
-                          />
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center">
-                          <label className="block text-xs text-slate-600 mb-1">Link do OWU</label>
-                          <input
-                            value={item.link}
-                            onChange={(e) => handleChange(idx, 'link', e.target.value)}
-                            className="w-full border rounded px-2 py-1 text-sm text-center"
-                            placeholder={`https://`}
-                          />
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center">
-                          <label className="block text-xs text-slate-600 mb-1">Plik do pobrania</label>
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="file"
-                              onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])}
-                              className="text-xs"
-                            />
+                      <div className="flex gap-3 mt-3">
+                        <div className="flex-1">
+                          <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
+                            <div className="bg-blue-500 rounded-full p-3 mb-3 inline-flex">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-3l-2-2H9L7 5H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                            <div className="font-medium text-sm">Pozycja {idx + 1}</div>
+                            <div className="text-xs text-slate-500 mt-1">{item.description || 'opis umowy'}</div>
                           </div>
-                          <div className="mt-2 text-xs text-slate-500 text-center">{item.fileName}</div>
+                        </div>
+
+                        <div className="flex-1">
+                          <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
+                            <div className="bg-green-500 rounded-full p-3 mb-3 inline-flex">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 14.828a4 4 0 010-5.656L15 7.999m-6 8l1.172-1.172a4 4 0 005.656 0L19 13.657" />
+                              </svg>
+                            </div>
+                            <div className="font-medium text-sm text-green-600">link do OWU</div>
+                            <div className="text-xs text-slate-500 mt-1 break-all">{item.link || 'https://...'}</div>
+                          </div>
+                        </div>
+
+                        <div className="flex-1">
+                          <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
+                            <div className="bg-amber-400 rounded-full p-3 mb-3 inline-flex">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l3 3m-3-3L9 15" />
+                              </svg>
+                            </div>
+                            <div className="font-medium text-sm">wybierz plik</div>
+                            <div className="mt-2">
+                              <input type="file" onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])} className="text-xs" />
+                            </div>
+                            <div className="mt-2 text-xs text-slate-500">{item.fileName}</div>
+                          </div>
                         </div>
                       </div>
                     </div>
