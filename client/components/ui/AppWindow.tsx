@@ -3,9 +3,9 @@ import React, { useState } from "react";
 type Props = { mode?: 'home' | 'settings' };
 
 export default function AppWindow({ mode = 'home' }: Props) {
-  type Item = { label: string; description: string; link: string; fileName: string };
+  type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber' };
   const [items, setItems] = useState<Item[]>(() =>
-    Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "" }))
+    Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' }))
   );
 
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
@@ -35,6 +35,26 @@ export default function AppWindow({ mode = 'home' }: Props) {
       copy[idx] = { ...copy[idx], fileName: file ? file.name : "" };
       return copy;
     });
+  };
+
+  const setColor = (idx: number, color: Item['color']) => {
+    setItems((prev) => {
+      const copy = prev.slice();
+      copy[idx] = { ...copy[idx], color };
+      return copy;
+    });
+  };
+
+  const bgFor = (color?: Item['color']) => {
+    switch (color) {
+      case 'green':
+        return 'bg-gradient-to-br from-green-50 to-green-200 animate-pulse';
+      case 'amber':
+        return 'bg-gradient-to-br from-amber-50 to-amber-200 animate-pulse';
+      case 'blue':
+      default:
+        return 'bg-gradient-to-br from-blue-50 to-blue-200 animate-pulse';
+    }
   };
 
   return (
