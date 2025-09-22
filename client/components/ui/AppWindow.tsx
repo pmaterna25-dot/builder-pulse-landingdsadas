@@ -287,7 +287,25 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
             <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
           </div>
 
-          {filtered.length > 0 ? <div aria-hidden className="flex-1 border-2 border-slate-800 bg-white min-w-0" /> : null}
+          {filtered.length > 0 ? (
+            <div className="flex-1 border-2 border-slate-800 bg-white min-w-0 p-4 flex flex-col">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-lg font-medium">Edytor</div>
+                <div className="flex items-center gap-2">
+                  <button onClick={generateFromSelections} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Generuj</button>
+                  <button onClick={() => { navigator.clipboard?.writeText(generatedText || ""); }} className="px-3 py-1 bg-slate-200 rounded text-sm">Kopiuj</button>
+                </div>
+              </div>
+
+              <textarea
+                ref={generatedRef}
+                value={generatedText}
+                onChange={(e) => setGeneratedText(e.target.value)}
+                className="flex-1 w-full border rounded p-3 text-sm resize-none"
+                placeholder="Wygenerowany tekst pojawi się tutaj..."
+              />
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
