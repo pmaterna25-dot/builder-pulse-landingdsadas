@@ -556,6 +556,22 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 </div>
               </div>
 
+              {/* SU sum info when selecting positions 1..3 */}
+              {(() => {
+                const selPos = items.map((it, i) => (it.selectedSlots && it.selectedSlots.length > 0 ? i + 1 : null)).filter(Boolean) as number[];
+                const special = selPos.filter((n) => n >= 1 && n <= 3).sort((a, b) => b - a);
+                if (special.length > 0) {
+                  const list = special.map((n) => `Pozycja ${n}`).join(', ');
+                  return (
+                    <div className="mb-3 p-3 bg-yellow-50 border-l-4 border-amber-400 text-slate-800">
+                      <div className="font-medium">Uwaga — sumowanie SU</div>
+                      <div className="text-sm mt-1">Wybrane umowy ({list}) będą sumowane przy wyliczaniu świadczenia SU. Jeśli wybierzesz np. Pozycja {special.join('+')}, wypłata będzie sumą dla: {special.join(', ')}.</div>
+                    </div>
+                  );
+                }
+                return null;
+              })()}
+
               {/* Preview: bolded contract names with larger font */}
               <div className="mb-3 overflow-auto max-h-40">
                 {generatedText ? (
