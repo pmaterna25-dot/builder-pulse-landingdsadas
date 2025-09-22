@@ -275,6 +275,22 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   const onCircleClick = (idx: number, slot: 'left' | 'mid' | 'right') => {
     // Only selectable on home (non-editable) per requirement
     if (editable) return;
+
+    // If right slot and file exists, download it immediately (then toggle selection)
+    if (slot === 'right') {
+      const fileId = items[idx].fileId;
+      if (fileId) {
+        const f = savedFiles.find((s) => s.id === fileId);
+        if (f) {
+          try {
+            downloadSavedFile(f);
+          } catch (e) {
+            console.error('Failed to download file', e);
+          }
+        }
+      }
+    }
+
     setItems((prev) => {
       const copy = prev.slice();
       const current = copy[idx].selectedSlot === slot ? null : slot;
