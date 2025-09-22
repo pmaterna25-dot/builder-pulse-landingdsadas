@@ -103,8 +103,9 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     const invalid = sel.filter((i) => {
       const it = items[i];
       if (!it.umowaDodatkowaLuxmed) return false;
-      // check if base contract is set either on same item or referenced item
-      if (it.umowaWystepujacaPrzy) return true; // has base flag but needs reference? keep simple: require reference when set
+      // valid if same item has base contract
+      if (it.umowaWystepujacaPrzy) return false;
+      // or valid if reference points to an item with base contract
       const ref = typeof it.umowaWystepujacaPrzyRef === 'number' ? it.umowaWystepujacaPrzyRef : null;
       if (ref !== null) {
         const target = items[ref];
