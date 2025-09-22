@@ -201,9 +201,9 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     return val.length > length ? `${val.slice(0, length)}...` : val;
   };
 
-  const handleChange = (idx: number, field: keyof Item, value: string) => {
+  const handleChange = (idx: number, field: keyof Item, value: any) => {
     // enforce label max length 30
-    if (field === 'label') {
+    if (field === 'label' && typeof value === 'string') {
       value = value.slice(0, 30);
     }
 
