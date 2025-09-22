@@ -147,7 +147,14 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     // Validate that package doesn't include items where additional Luxmed is set without base contract
     const invalid = (pkg.selectedIndices || []).filter((i) => {
       const it = items[i];
-      return it && it.umowaDodatkowaLuxmed && !it.umowaWystepujacaPrzy;
+      if (!it || !it.umowaDodatkowaLuxmed) return false;
+      if (it.umowaWystepujacaPrzy) return false;
+      const ref = typeof it.umowaWystepujacaPrzyRef === 'number' ? it.umowaWystepujacaPrzyRef : null;
+      if (ref !== null) {
+        const tgt = items[ref];
+        return !(tgt && tgt.umowaWystepujacaPrzy);
+      }
+      return true;
     });
     if (invalid.length > 0) {
       alert(`Nie można pobrać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają umowę dodatkową LUXMED bez włączonej umowy podstawowej.`);
