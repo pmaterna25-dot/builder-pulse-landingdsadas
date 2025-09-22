@@ -112,6 +112,15 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
           <div className="w-[480px] flex flex-col gap-4 min-h-0">
             <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
 
+            <div className="mb-2 px-2 w-full">
+              <div className="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35" />
+                </svg>
+                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Szukaj pozycji..." className="flex-1 border rounded px-2 py-1 text-sm" />
+              </div>
+            </div>
+
             <div className="flex-1 border-2 border-slate-800 bg-white p-2 min-h-0">
               {(mode === 'settings' || mode === 'home') ? (
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
