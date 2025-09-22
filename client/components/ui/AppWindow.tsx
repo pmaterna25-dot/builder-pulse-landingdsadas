@@ -62,13 +62,13 @@ export default function AppWindow({ mode = 'home' }: Props) {
       <div className="w-full h-full bg-white p-6">
         <div className="flex h-full gap-6">
           <div className="w-[480px] flex flex-col gap-4 min-h-0">
-            <div aria-hidden className="h-20 border-2 border-slate-800 bg-white" />
+            <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
 
             <div className="flex-1 border-2 border-slate-800 bg-white p-2 min-h-0">
               {mode === 'settings' ? (
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
                   {items.map((item, idx) => (
-                    <div key={idx} className={`mb-3 border rounded p-4 min-h-[150px] relative ${bgFor(item.color)}`}>
+                    <div key={idx} className={`mb-3 border rounded p-3 min-h-[100px] relative ${bgFor(item.color)}`}>
                       <div className="flex flex-col items-center">
                         <div className="flex items-center gap-3">
                           <div className="text-sm font-medium text-slate-700">Pozycja {idx + 1}</div>
@@ -96,9 +96,9 @@ export default function AppWindow({ mode = 'home' }: Props) {
                       <div className="flex gap-3 mt-3 min-w-0">
                         {/* Left card */}
                         <div className="flex-1 min-w-0">
-                          <div className="bg-white/80 rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
-                            <div className="bg-blue-500 rounded-full p-3 mb-3 inline-flex">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
+                            <div className="bg-blue-500 rounded-full p-2 mb-2 inline-flex">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-3l-2-2H9L7 5H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
                               </svg>
                             </div>
@@ -106,7 +106,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                               <textarea
                                 value={item.description}
                                 onChange={(e) => handleChange(idx, 'description', e.target.value)}
-                                className="w-full h-20 border rounded px-2 py-1 text-sm resize-none"
+                                className="w-full h-12 border rounded px-2 py-1 text-sm resize-none"
                                 placeholder={`Opis umowy dla pozycji ${idx + 1}`}
                               />
                             ) : (
@@ -120,9 +120,9 @@ export default function AppWindow({ mode = 'home' }: Props) {
 
                         {/* Middle card */}
                         <div className="flex-1 min-w-0">
-                          <div className="bg-white/80 rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
-                            <div className="bg-green-500 rounded-full p-3 mb-3 inline-flex">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
+                            <div className="bg-green-500 rounded-full p-2 mb-2 inline-flex">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 14.828a4 4 0 010-5.656L15 7.999m-6 8l1.172-1.172a4 4 0 005.656 0L19 13.657" />
                               </svg>
                             </div>
@@ -144,7 +144,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
 
                         {/* Right card */}
                         <div className="flex-1 min-w-0">
-                          <div className="bg-white/80 rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
+                          <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
                             <label className="relative inline-block">
                               <input
                                 type="file"
@@ -152,8 +152,8 @@ export default function AppWindow({ mode = 'home' }: Props) {
                                 disabled={editingIndex !== idx}
                                 className={`absolute inset-0 w-full h-full opacity-0 ${editingIndex === idx ? 'cursor-pointer' : 'pointer-events-none'}`}
                               />
-                              <div className="bg-amber-400 rounded-full p-3 mb-3 inline-flex">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <div className="bg-amber-400 rounded-full p-2 mb-2 inline-flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l3 3m-3-3L9 15" />
                                 </svg>
                               </div>
@@ -198,7 +198,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
               )}
             </div>
 
-            <div aria-hidden className="h-20 border-2 border-slate-800 bg-white" />
+            <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
           </div>
 
           <div aria-hidden className="flex-1 border-2 border-slate-800 bg-white min-w-0" />
