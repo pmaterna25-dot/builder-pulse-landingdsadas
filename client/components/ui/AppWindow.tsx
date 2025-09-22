@@ -66,6 +66,92 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     } catch (e) {}
   }, [savedFiles]);
 
+  // Packages (bundles) saved in the app
+  type SavedPackage = { id: string; name: string; createdAt: number; selectedIndices: number[]; generatedText: string; fileIds: string[] };
+  const [packageName, setPackageName] = useState<string>("");
+  const [savedPackages, setSavedPackages] = useState<SavedPackage[]>(() => {
+    try {
+      const raw = localStorage.getItem('app_packages_v1');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('app_packages_v1', JSON.stringify(savedPackages));
+    } catch (e) {}
+  }, [savedPackages]);
+
+  const savePackage = (name?: string) => {
+    const sel = items.map((it, idx) => ({ it, idx })).filter(({ it }) => it.selectedSlot).map(({ idx }) => idx);
+    const pkgName = (name || packageName || `package_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}` ).trim();
+    const fileIds = items.filter((it) => it.selectedSlot && it.fileName).map((it) => {
+      const f = savedFiles.find((s) => s.name === it.fileName);
+      return f ? f.id : null;
+    }).filter(Boolean) as string[];
+
+    const newPkg: SavedPackage = { id: String(Date.now()), name: pkgName, createdAt: Date.now(), selectedIndices: sel, generatedText: generatedText || '', fileIds };
+    setSavedPackages((prev) => [newPkg, ...prev]);
+    setPackageName('');
+  };
+
+  const loadScript = (src: string) => new Promise<void>((res, rej) => {
+    if ((window as any).JSZip) return res();
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = () => res();
+    s.onerror = () => rej(new Error('Failed to load script'));
+    document.head.appendChild(s);
+  });
+
+  const dataUrlToUint8Array = (dataUrl: string) => {
+    const comma = dataUrl.indexOf(',');
+    const base64 = dataUrl.slice(comma + 1);
+    const binary = atob(base64);
+    const len = binary.length;
+    const arr = new Uint8Array(len);
+    for (let i = 0; i < len; i++) arr[i] = binary.charCodeAt(i);
+    return arr;
+  };
+
+  const downloadPackageAsZip = async (pkg: SavedPackage) => {
+    try {
+      await loadScript('https://cdn.jsdelivr.net/npm/jszip@3.10.0/dist/jszip.min.js');
+      const JSZip = (window as any).JSZip;
+      if (!JSZip) throw new Error('JSZip not available');
+      const zip = new JSZip();
+      zip.file('manifest.json', JSON.stringify({ name: pkg.name, createdAt: pkg.createdAt, selectedIndices: pkg.selectedIndices }, null, 2));
+      zip.file(`${pkg.name || 'generated'}.txt`, pkg.generatedText || '');
+
+      for (const id of pkg.fileIds) {
+        const f = savedFiles.find((x) => x.id === id);
+        if (!f) continue;
+        const data = dataUrlToUint8Array(f.dataUrl);
+        zip.file(f.name, data);
+      }
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${pkg.name || 'package'}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (e) {
+      // fallback: download a JSON bundle
+      const bundle = { meta: { name: pkg.name, createdAt: pkg.createdAt }, generatedText: pkg.generatedText, files: pkg.fileIds.map((id) => savedFiles.find((f) => f.id === id)) };
+      const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${pkg.name || 'package'}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  };
+
   const clearSelections = () => {
     setItems((prev) => prev.map((it) => ({ ...it, selectedSlot: null })));
   };
