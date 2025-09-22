@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-type Item = { label: string; description: string; link: string; fileName: string; fileId?: string; color?: 'green' | 'blue' | 'amber'; selectedSlot?: 'left' | 'mid' | 'right' | null };
+type Item = { label: string; description: string; link: string; fileName: string; fileId?: string; color?: 'green' | 'blue' | 'amber'; selectedSlots?: ('left'|'mid'|'right')[] };
 
 type Props = { mode?: 'home' | 'settings'; editable?: boolean; items?: Item[]; setItems?: React.Dispatch<React.SetStateAction<Item[]>> };
 
@@ -24,21 +24,19 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   const generatedRef = useRef<HTMLTextAreaElement | null>(null);
 
   const generateFromSelections = () => {
-    const selected = items.map((it, idx) => ({ ...it, idx })).filter((it) => it.selectedSlot);
+    const selected = items.map((it, idx) => ({ ...it, idx })).filter((it) => it.selectedSlots && it.selectedSlots.length > 0);
     if (selected.length === 0) {
       setGeneratedText("Brak zaznaczonych elementów.");
       generatedRef.current?.focus();
       return;
     }
 
-    const parts = selected.map(({ label, selectedSlot, description, link, fileName }) => {
+    const parts = selected.map(({ label, selectedSlots, description, link, fileName }) => {
       const title = (label || 'Bez nazwy').trim();
-      const content = selectedSlot === 'left'
-        ? (description || '(brak)')
-        : selectedSlot === 'mid'
-          ? (link || '(brak)')
-          : (fileName || '(brak)');
-      return `${title}: ${content}`;
+      const slotContents = (selectedSlots || []).map((slot) =>
+        slot === 'left' ? (description || '(brak)') : slot === 'mid' ? (link || '(brak)') : (fileName || '(brak)')
+      ).join(' | ');
+      return `${title}: ${slotContents}`;
     });
 
     setGeneratedText(parts.join('\n\n'));
@@ -82,9 +80,9 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   }, [savedPackages]);
 
   const savePackage = (name?: string) => {
-    const sel = items.map((it, idx) => ({ it, idx })).filter(({ it }) => it.selectedSlot).map(({ idx }) => idx);
+    const sel = items.map((it, idx) => ({ it, idx })).filter(({ it }) => it.selectedSlots && it.selectedSlots.length > 0).map(({ idx }) => idx);
     const pkgName = (name || packageName || `package_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}` ).trim();
-    const fileIds = items.filter((it) => it.selectedSlot && it.fileName).map((it) => it.fileId).filter(Boolean) as string[];
+    const fileIds = items.filter((it) => it.selectedSlots && it.selectedSlots.includes('right') && it.fileId).map((it) => it.fileId as string).filter(Boolean) as string[];
 
     const newPkg: SavedPackage = { id: String(Date.now()), name: pkgName, createdAt: Date.now(), selectedIndices: sel, generatedText: generatedText || '', fileIds };
     setSavedPackages((prev) => [newPkg, ...prev]);
@@ -147,12 +145,12 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   };
 
   const clearSelections = () => {
-    setItems((prev) => prev.map((it) => ({ ...it, selectedSlot: null })));
+    setItems((prev) => prev.map((it) => ({ ...it, selectedSlots: [] })));
   };
 
   const exportToCSVAndSave = (filename?: string) => {
-    const header = ['Index', 'Label', 'Description', 'Link', 'FileName', 'SelectedSlot'];
-    const rows = items.map((it, idx) => [String(idx + 1), it.label || '', it.description || '', it.link || '', it.fileName || '', it.selectedSlot || '']);
+    const header = ['Index', 'Label', 'Description', 'Link', 'FileName', 'SelectedSlots'];
+    const rows = items.map((it, idx) => [String(idx + 1), it.label || '', it.description || '', it.link || '', it.fileName || '', (it.selectedSlots ? it.selectedSlots.join(';') : '')]);
     const csv = [header, ...rows].map((r) => r.map((cell) => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
 
     const name = filename || `export_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
@@ -290,8 +288,9 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
 
     setItems((prev) => {
       const copy = prev.slice();
-      const current = copy[idx].selectedSlot === slot ? null : slot;
-      copy[idx] = { ...copy[idx], selectedSlot: current };
+            const arr = new Set(copy[idx].selectedSlots || []);
+      if (arr.has(slot)) arr.delete(slot); else arr.add(slot);
+      copy[idx] = { ...copy[idx], selectedSlots: Array.from(arr) };
       return copy;
     });
   };
@@ -359,7 +358,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                         {/* Left card */}
                         <div className="flex-1 min-w-0">
                           <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
-                            <div onMouseEnter={() => onCircleEnter(idx, 'left')} onMouseLeave={onCircleLeave} onClick={() => onCircleClick(idx, 'left')} className={`${items[idx].selectedSlot==='left' && mode==='home' ? 'rainbow-circle text-white' : 'bg-blue-500'} rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-left`? 'scale-105 shadow-lg' : ''}`}>
+                            <div onMouseEnter={() => onCircleEnter(idx, 'left')} onMouseLeave={onCircleLeave} onClick={() => onCircleClick(idx, 'left')} className={`${items[idx].selectedSlots && items[idx].selectedSlots.includes('left') && mode==='home' ? 'rainbow-circle text-white' : 'bg-blue-500'} rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-left`? 'scale-105 shadow-lg' : ''}`}>
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-3l-2-2H9L7 5H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
                               </svg>
@@ -383,7 +382,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                         {/* Middle card */}
                         <div className="flex-1 min-w-0">
                           <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
-                            <div onMouseEnter={() => onCircleEnter(idx, 'mid')} onMouseLeave={onCircleLeave} onClick={() => onCircleClick(idx, 'mid')} className={`${items[idx].selectedSlot==='mid' && mode==='home' ? 'rainbow-circle text-white' : 'bg-green-500'} rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-mid`? 'scale-105 shadow-lg' : ''}`}>
+                            <div onMouseEnter={() => onCircleEnter(idx, 'mid')} onMouseLeave={onCircleLeave} onClick={() => onCircleClick(idx, 'mid')} className={`${items[idx].selectedSlots && items[idx].selectedSlots.includes('mid') && mode==='home' ? 'rainbow-circle text-white' : 'bg-green-500'} rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-mid`? 'scale-105 shadow-lg' : ''}`}>
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 14.828a4 4 0 010-5.656L15 7.999m-6 8l1.172-1.172a4 4 0 005.656 0L19 13.657" />
                               </svg>
@@ -414,7 +413,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                                 disabled={!editable || editingIndex !== idx}
                                 className={`absolute inset-0 w-full h-full opacity-0 ${(editable && editingIndex === idx) ? 'cursor-pointer' : 'pointer-events-none'}`}
                               />
-                              <div onClick={() => onCircleClick(idx, 'right')} className={`${items[idx].selectedSlot==='right' && mode==='home' ? 'rainbow-circle text-white' : 'bg-amber-400'} rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-right`? 'scale-105 shadow-lg' : ''}`}>
+                              <div onClick={() => onCircleClick(idx, 'right')} className={`${items[idx].selectedSlots && items[idx].selectedSlots.includes('right') && mode==='home' ? 'rainbow-circle text-white' : 'bg-amber-400'} rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-right`? 'scale-105 shadow-lg' : ''}`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l3 3m-3-3L9 15" />
                                 </svg>
