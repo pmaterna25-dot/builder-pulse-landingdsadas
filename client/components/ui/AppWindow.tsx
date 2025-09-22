@@ -476,11 +476,39 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 </div>
               </div>
 
+              {/* Preview: bolded contract names with larger font */}
+              <div className="mb-3 overflow-auto max-h-40">
+                {generatedText ? (
+                  generatedText.split('\n\n').map((block, i) => {
+                    const idx = block.indexOf(':');
+                    const title = idx >= 0 ? block.slice(0, idx).trim() : '';
+                    const content = idx >= 0 ? block.slice(idx + 1).trim() : block;
+                    // If content starts with "OWU: ", split and bold label
+                    let owuLabel = null;
+                    let rest = content;
+                    if (content.startsWith('OWU:')) {
+                      owuLabel = 'OWU:';
+                      rest = content.slice(4).trim();
+                    }
+                    return (
+                      <div key={i} className="mb-2">
+                        {title ? <div className="font-semibold text-[15px] text-slate-800">{title}</div> : null}
+                        <div className="text-sm text-slate-700">
+                          {owuLabel ? <span className="font-semibold">{owuLabel}</span> : null} {rest}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-xs text-slate-500">Brak podglądu — wygeneruj zawartość.</div>
+                )}
+              </div>
+
               <textarea
                 ref={generatedRef}
                 value={generatedText}
                 onChange={(e) => setGeneratedText(e.target.value)}
-                className="flex-1 w-full border rounded p-3 text-sm resize-none"
+                className="flex-1 w-full border rounded p-3 text-[15px] resize-none"
                 placeholder="Wygenerowany tekst pojawi się tutaj..."
               />
 
