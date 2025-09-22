@@ -199,7 +199,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                           </>
                         ) : (
                           <>
-                            <button onClick={() => setConfirmIndex(idx)} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Edycja</button>
+                            {editable ? <button onClick={() => setConfirmIndex(idx)} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Edycja</button> : null}
                           </>
                         )}
                       </div>
