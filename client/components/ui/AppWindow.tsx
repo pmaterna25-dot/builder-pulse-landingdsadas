@@ -424,7 +424,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                                 ) : (
                                   <div className="mt-2 flex flex-wrap gap-1">
                                     {(item.tags || []).map((t, ti) => (
-                                      <span key={ti} className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">{t}</span>
+                                      <button key={ti} onClick={() => setSearch(t)} className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700 hover:bg-slate-200">{t}</button>
                                     ))}
                                   </div>
                                 )}
