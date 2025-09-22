@@ -116,7 +116,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       return true;
     });
     if (invalid.length > 0) {
-      alert(`Nie można zapisać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają zaznaczoną umowę dodatkową LUXMED bez poprawnie ustawionej umowy podstawowej.`);
+      alert(`Nie można zapisać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają tag "luxmed" bez poprawnie ustawionej umowy podstawowej.`);
       return;
     }
 
