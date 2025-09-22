@@ -22,7 +22,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center gap-6">
+        <div className="flex gap-3">
+          <button className="px-4 py-2 bg-slate-800 text-white rounded">Główna strona</button>
+          <button className="px-4 py-2 bg-white border border-slate-300 text-slate-800 rounded">Ustawienia</button>
+        </div>
         <AppWindow />
       </div>
     </div>
