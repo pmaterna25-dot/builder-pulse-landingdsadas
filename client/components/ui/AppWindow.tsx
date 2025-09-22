@@ -208,11 +208,36 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   };
 
   const handleFileChange = (idx: number, file?: File | null) => {
-    setItems((prev) => {
-      const copy = prev.slice();
-      copy[idx] = { ...copy[idx], fileName: file ? file.name : "" };
-      return copy;
-    });
+    if (!file) {
+      setItems((prev) => {
+        const copy = prev.slice();
+        copy[idx] = { ...copy[idx], fileName: "", fileId: undefined };
+        return copy;
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = String(reader.result || '');
+      const fileObj: SavedFile = { id: String(Date.now()) + '_' + file.name, name: file.name, dataUrl, mime: file.type || 'application/octet-stream', createdAt: Date.now() };
+      setSavedFiles((prev) => [fileObj, ...prev]);
+
+      setItems((prev) => {
+        const copy = prev.slice();
+        copy[idx] = { ...copy[idx], fileName: file.name, fileId: fileObj.id };
+        return copy;
+      });
+    };
+    reader.onerror = () => {
+      // on error, still set name
+      setItems((prev) => {
+        const copy = prev.slice();
+        copy[idx] = { ...copy[idx], fileName: file.name };
+        return copy;
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
   const setColor = (idx: number, color: Item['color']) => {
