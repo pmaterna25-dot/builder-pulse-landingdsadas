@@ -99,6 +99,16 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     const pkgName = (name || packageName || `package_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}` ).trim();
     const fileIds = items.filter((it) => it.selectedSlots && it.selectedSlots.includes('right') && it.fileId).map((it) => it.fileId as string).filter(Boolean) as string[];
 
+    // Validate: umowaDodatkowaLuxmed requires umowaWystepujacaPrzy on the same item
+    const invalid = sel.filter((i) => {
+      const it = items[i];
+      return it.umowaDodatkowaLuxmed && !it.umowaWystepujacaPrzy;
+    });
+    if (invalid.length > 0) {
+      alert(`Nie można zapisać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają zaznaczoną umowę dodatkową LUXMED bez włączonej umowy podstawowej.`);
+      return;
+    }
+
     const newPkg: SavedPackage = { id: String(Date.now()), name: pkgName, createdAt: Date.now(), selectedIndices: sel, generatedText: generatedText || '', fileIds };
     setSavedPackages((prev) => [newPkg, ...prev]);
     setPackageName('');
