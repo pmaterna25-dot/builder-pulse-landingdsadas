@@ -85,7 +85,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                             ) : (
                               <>
                                 <div className="font-medium text-sm">Pozycja {idx + 1}</div>
-                                <div className="text-xs text-slate-500 mt-1">{item.description || 'opis umowy'}</div>
+                                <div className="text-xs text-slate-500 mt-1">{truncatePreview(item.description, 8) || 'opis umowy'}</div>
                               </>
                             )}
                           </div>
