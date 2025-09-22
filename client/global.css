@@ -107,3 +107,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Rainbow animation for selected circles */
+@keyframes rainbow-slide {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.rainbow-circle {
+  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+  background-size: 200% 100%;
+  animation: rainbow-slide 1.8s linear infinite;
+}
