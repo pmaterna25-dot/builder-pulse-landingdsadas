@@ -99,7 +99,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     const pkgName = (name || packageName || `package_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}` ).trim();
     const fileIds = items.filter((it) => it.selectedSlots && it.selectedSlots.includes('right') && it.fileId).map((it) => it.fileId as string).filter(Boolean) as string[];
 
-    // Validate: umowaDodatkowaLuxmed requires umowaWystepujacaPrzy on the same item
+    // Validate: if item has tag 'luxmed' it requires a base contract (umowa występująca przy) either on same item or referenced item
     const invalid = sel.filter((i) => {
       const it = items[i];
       const hasLuxmed = (it.tags || []).some((t) => (t || '').toLowerCase() === 'luxmed');
