@@ -36,12 +36,16 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       const lines: string[] = [];
       lines.push(title);
       // Always put description first if selected
-      if (selectedSlots?.includes('left')) {
+      const hasDesc = selectedSlots?.includes('left');
+      const hasOwu = selectedSlots?.includes('mid');
+      if (hasDesc) {
         lines.push(description || '(brak)');
       }
-      // OWU should be below description
-      if (selectedSlots?.includes('mid')) {
-        lines.push(`OWU: ${link || '(brak)'}`);
+      // Add blank line before OWU for visual separation when description exists
+      if (hasOwu) {
+        if (hasDesc) lines.push('');
+        // prefix two spaces for indentation
+        lines.push(`  OWU: ${link || '(brak)'}`);
       }
       // File info last
       if (selectedSlots?.includes('right')) {
