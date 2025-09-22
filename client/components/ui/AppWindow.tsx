@@ -35,30 +35,34 @@ export default function AppWindow({ mode = 'home' }: Props) {
               {mode === 'settings' ? (
                 <div className="h-full overflow-y-auto pr-2">
                   {items.map((item, idx) => (
-                    <div key={idx} className="mb-3 border rounded p-2 bg-white">
-                      <div className="mb-2 text-sm font-medium text-slate-700">Pozycja {idx + 1}</div>
-                      <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
-                        <div>
+                    <div key={idx} className="mb-3 border rounded p-4 bg-white min-h-[150px]">
+                      <div className="flex items-start justify-between">
+                        <div className="text-sm font-medium text-slate-700">Pozycja {idx + 1}</div>
+                        <div className="text-xs text-slate-500 max-w-[65%] text-right">Za co odpowiada ten box — krótki opis.</div>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 mt-3 items-center">
+                        <div className="flex flex-col items-center justify-center">
                           <label className="block text-xs text-slate-600 mb-1">Opis umowy</label>
-                          <input
+                          <textarea
                             value={item.description}
                             onChange={(e) => handleChange(idx, 'description', e.target.value)}
-                            className="w-full border rounded px-2 py-1 text-sm"
+                            className="w-full h-20 border rounded px-2 py-1 text-sm text-center resize-none"
                             placeholder={`Opis umowy dla pozycji ${idx + 1}`}
                           />
                         </div>
 
-                        <div>
+                        <div className="flex flex-col items-center justify-center">
                           <label className="block text-xs text-slate-600 mb-1">Link do OWU</label>
                           <input
                             value={item.link}
                             onChange={(e) => handleChange(idx, 'link', e.target.value)}
-                            className="w-full border rounded px-2 py-1 text-sm"
+                            className="w-full border rounded px-2 py-1 text-sm text-center"
                             placeholder={`https://`}
                           />
                         </div>
 
-                        <div>
+                        <div className="flex flex-col items-center justify-center">
                           <label className="block text-xs text-slate-600 mb-1">Plik do pobrania</label>
                           <div className="flex items-center gap-2">
                             <input
@@ -66,11 +70,10 @@ export default function AppWindow({ mode = 'home' }: Props) {
                               onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])}
                               className="text-xs"
                             />
-                            <span className="text-xs text-slate-500">{item.fileName}</span>
                           </div>
+                          <div className="mt-2 text-xs text-slate-500 text-center">{item.fileName}</div>
                         </div>
                       </div>
-                      <p className="text-xs text-slate-500 mt-2">Za co odpowiada ten box — krótki opis.</p>
                     </div>
                   ))}
                 </div>
