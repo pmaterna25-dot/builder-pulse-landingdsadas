@@ -32,10 +32,12 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     }
 
     const parts = selected.map(({ label, selectedSlots, description, link, fileName }) => {
-      const title = (label || 'Bez nazwy').trim();
-      const slotContents = (selectedSlots || []).map((slot) =>
-        slot === 'left' ? (description || '(brak)') : slot === 'mid' ? (link || '(brak)') : (fileName || '(brak)')
-      ).join(' | ');
+      const title = `**${(label || 'Bez nazwy').trim()}**`;
+      const slotContents = (selectedSlots || []).map((slot) => {
+        if (slot === 'left') return description || '(brak)';
+        if (slot === 'mid') return `**OWU**: ${link || '(brak)'}`;
+        return fileName || '(brak)';
+      }).join(' | ');
       return `${title}: ${slotContents}`;
     });
 
