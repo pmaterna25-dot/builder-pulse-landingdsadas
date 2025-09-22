@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber'; selectedSlot?: 'left' | 'mid' | 'right' | null };
 
