@@ -172,7 +172,7 @@ export default function AppWindow({ mode = 'home', editable = true }: Props) {
                                 disabled={editingIndex !== idx}
                                 className={`absolute inset-0 w-full h-full opacity-0 ${editingIndex === idx ? 'cursor-pointer' : 'pointer-events-none'}`}
                               />
-                              <div className="bg-amber-400 rounded-full p-2 mb-2 inline-flex">
+                              <div className={`bg-amber-400 rounded-full p-2 mb-2 inline-flex ${hoveredCircleIndex===idx? 'scale-105 shadow-lg' : ''}`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l3 3m-3-3L9 15" />
                                 </svg>
