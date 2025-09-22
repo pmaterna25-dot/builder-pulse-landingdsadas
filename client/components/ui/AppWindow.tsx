@@ -31,17 +31,14 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       return;
     }
 
-    const parts = selected.map(({ idx, label, selectedSlot, description, link, fileName }) => {
-      const lines: string[] = [];
-      lines.push(`Pozycja ${idx + 1}${label ? ` - ${label}` : ''}`);
-      if (selectedSlot === 'left') {
-        lines.push(`Opis: ${description || '(brak)'}`);
-      } else if (selectedSlot === 'mid') {
-        lines.push(`Link: ${link || '(brak)'}`);
-      } else if (selectedSlot === 'right') {
-        lines.push(`Plik: ${fileName || '(brak)'}`);
-      }
-      return lines.join('\n');
+    const parts = selected.map(({ label, selectedSlot, description, link, fileName }) => {
+      const title = (label || 'Bez nazwy').trim();
+      const content = selectedSlot === 'left'
+        ? (description || '(brak)')
+        : selectedSlot === 'mid'
+          ? (link || '(brak)')
+          : (fileName || '(brak)');
+      return `${title}: ${content}`;
     });
 
     setGeneratedText(parts.join('\n\n'));
