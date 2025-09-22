@@ -91,6 +91,19 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     });
   };
 
+  const [search, setSearch] = useState<string>("");
+  const entries = items.map((item, idx) => ({ item, idx }));
+  const filtered = entries.filter(({ item, idx }) => {
+    const q = (search || "").trim().toLowerCase();
+    if (!q) return true;
+    return (
+      (item.label || "").toLowerCase().includes(q) ||
+      (item.description || "").toLowerCase().includes(q) ||
+      (item.link || "").toLowerCase().includes(q) ||
+      (item.fileName || "").toLowerCase().includes(q) ||
+      (`pozycja ${idx + 1}`).includes(q)
+    );
+  });
 
   return (
     <div className="w-[1100px] h-[700px] bg-white rounded shadow-xl">
@@ -100,9 +113,9 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
             <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
 
             <div className="flex-1 border-2 border-slate-800 bg-white p-2 min-h-0">
-              {true ? (
+              {(mode === 'settings' || mode === 'home') ? (
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
-                  {items.map((item, idx) => (
+                  {filtered.map(({item, idx}) => (
                     <div key={idx} className={`mb-3 border rounded p-3 min-h-[100px] relative ${bgFor(item.color)}`}>
                       <div className="flex flex-col items-center">
                         <div className="flex items-center gap-3">
@@ -236,7 +249,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
             <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
           </div>
 
-          <div aria-hidden className="flex-1 border-2 border-slate-800 bg-white min-w-0" />
+          {filtered.length > 0 ? <div aria-hidden className="flex-1 border-2 border-slate-800 bg-white min-w-0" /> : null}
         </div>
       </div>
     </div>
