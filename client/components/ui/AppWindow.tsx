@@ -366,6 +366,15 @@ export default function AppWindow({
     return val.length > length ? `${val.slice(0, length)}...` : val;
   };
 
+  const formatNumber = (n?: number) => {
+    if (typeof n !== "number") return "";
+    try {
+      return n.toLocaleString("pl-PL");
+    } catch (e) {
+      return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+  };
+
   const handleChange = (idx: number, field: keyof Item, value: any) => {
     // enforce label max length 30
     if (field === "label" && typeof value === "string") {
@@ -541,7 +550,7 @@ export default function AppWindow({
                   {filtered.map(({ item, idx }) => (
                     <div
                       key={idx}
-                      className={`mb-3 border rounded p-4 min-h-[160px] ${bgFor(item.color)}`}
+                      className={`mb-3 border rounded p-4 min-h-[160px] relative ${bgFor(item.color)}`}
                     >
                       <div className="flex flex-col items-center">
                         {mode === "home" ? (
@@ -694,7 +703,7 @@ export default function AppWindow({
                                     ))}
                                     {item.suAmount ? (
                                       <div className="ml-2 text-xs bg-amber-100 px-2 py-1 rounded text-amber-800">
-                                        🛡️ SU: {item.suAmount}
+                                        🛡️ SU: {formatNumber(item.suAmount)}
                                       </div>
                                     ) : (
                                       <div className="ml-2 text-xs text-slate-400">
@@ -1006,11 +1015,11 @@ export default function AppWindow({
                       <div className="text-sm mt-2">
                         {breakdown.map((b) => (
                           <div key={b.n}>
-                            Pozycja {b.n} "{b.name}" — SU: {b.amt} PLN
+                            Pozycja {b.n} "{b.name}" — SU: {formatNumber(b.amt)} PLN
                           </div>
                         ))}
                         <div className="font-semibold mt-1">
-                          Suma SU: {total} PLN
+                          Suma SU: {formatNumber(total)} PLN
                         </div>
                       </div>
                       {special.includes(3) ? (
