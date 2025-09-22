@@ -58,6 +58,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       return [];
     }
   });
+  const [folderOpen, setFolderOpen] = useState<boolean>(false);
 
   useEffect(() => {
     try {
