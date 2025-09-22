@@ -148,7 +148,8 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     // Validate that package doesn't include items where additional Luxmed is set without base contract
     const invalid = (pkg.selectedIndices || []).filter((i) => {
       const it = items[i];
-      if (!it || !it.umowaDodatkowaLuxmed) return false;
+      const hasLuxmed = it && (it.tags || []).some((t) => (t || '').toLowerCase() === 'luxmed');
+      if (!it || !hasLuxmed) return false;
       if (it.umowaWystepujacaPrzy) return false;
       const ref = typeof it.umowaWystepujacaPrzyRef === 'number' ? it.umowaWystepujacaPrzyRef : null;
       if (ref !== null) {
