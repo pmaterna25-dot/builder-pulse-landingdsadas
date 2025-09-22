@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 import React, { useState, useRef } from "react";
 
 type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber' };
