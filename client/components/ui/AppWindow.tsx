@@ -413,7 +413,18 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                                     })}
                                   </select>
                                 ) : null}
-                                <label className="flex items-center gap-2 mt-2"><input type="checkbox" checked={!!item.umowaDodatkowaLuxmed} onChange={(e) => handleChange(idx, 'umowaDodatkowaLuxmed', e.target.checked)} /> <span>umowa dodatkowa LUXMED</span></label>
+                                {editingIndex === idx ? (
+                                  <div className="mt-2">
+                                    <div className="text-xs text-slate-600 mb-1">Dodatkowe informacje (oddzielaj przecinkami)</div>
+                                    <input value={(item.tags || []).join(', ')} onChange={(e) => handleChange(idx, 'tags', e.target.value.split(',').map(s => s.trim()).filter(Boolean))} placeholder="np. luxmed, assistance, śmierć" className="w-full border rounded px-2 py-1 text-sm" />
+                                  </div>
+                                ) : (
+                                  <div className="mt-2 flex flex-wrap gap-1">
+                                    {(item.tags || []).map((t, ti) => (
+                                      <span key={ti} className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">{t}</span>
+                                    ))}
+                                  </div>
+                                )}
                               </div>
                             </>
                           ) : (
