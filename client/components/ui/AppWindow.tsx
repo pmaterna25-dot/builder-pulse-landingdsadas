@@ -362,6 +362,10 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                                 <button aria-label="blue" onClick={() => setColor(idx, 'blue')} className="w-6 h-6 rounded-full bg-blue-500 ring-2 ring-white shadow-sm" />
                                 <button aria-label="amber" onClick={() => setColor(idx, 'amber')} className="w-6 h-6 rounded-full bg-amber-400 ring-2 ring-white shadow-sm" />
                               </div>
+                              <div className="ml-3 flex flex-col text-xs text-slate-700">
+                                <label className="flex items-center gap-2"><input type="checkbox" checked={!!item.umowaWystepujacaPrzy} onChange={(e) => handleChange(idx, 'umowaWystepujacaPrzy', e.target.checked)} /> <span>umowa występująca przy</span></label>
+                                <label className="flex items-center gap-2"><input type="checkbox" checked={!!item.umowaDodatkowaLuxmed} onChange={(e) => handleChange(idx, 'umowaDodatkowaLuxmed', e.target.checked)} /> <span>umowa dodatkowa LUXMED</span></label>
+                              </div>
                             </>
                           ) : (
                             <div className="text-xs text-slate-500">{(item.label || 'Za co odpowiada ten box — krótki opis.').slice(0,30)}</div>
