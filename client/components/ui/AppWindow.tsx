@@ -48,6 +48,60 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     setTimeout(() => generatedRef.current?.focus(), 50);
   };
 
+  // Stored files (persisted in localStorage as base64 data URLs)
+  type SavedFile = { id: string; name: string; dataUrl: string; mime: string; createdAt: number };
+  const [savedFiles, setSavedFiles] = useState<SavedFile[]>(() => {
+    try {
+      const raw = localStorage.getItem('app_files_v1');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('app_files_v1', JSON.stringify(savedFiles));
+    } catch (e) {}
+  }, [savedFiles]);
+
+  const clearSelections = () => {
+    setItems((prev) => prev.map((it) => ({ ...it, selectedSlot: null })));
+  };
+
+  const exportToCSVAndSave = (filename?: string) => {
+    const header = ['Index', 'Label', 'Description', 'Link', 'FileName', 'SelectedSlot'];
+    const rows = items.map((it, idx) => [String(idx + 1), it.label || '', it.description || '', it.link || '', it.fileName || '', it.selectedSlot || '']);
+    const csv = [header, ...rows].map((r) => r.map((cell) => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+
+    const name = filename || `export_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
+    const dataUrl = `data:text/csv;charset=utf-8;base64,${btoa(unescape(encodeURIComponent(csv)))}`;
+
+    const file: SavedFile = { id: String(Date.now()), name, dataUrl, mime: 'text/csv', createdAt: Date.now() };
+    setSavedFiles((prev) => [file, ...prev]);
+
+    // Also offer immediate download
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  const downloadSavedFile = (file: SavedFile) => {
+    const a = document.createElement('a');
+    a.href = file.dataUrl;
+    a.download = file.name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  const removeSavedFile = (id: string) => {
+    setSavedFiles((prev) => prev.filter((f) => f.id !== id));
+  };
+
   const truncatePreview = (val?: string, length = 8) => {
     if (!val) return "";
     return val.length > length ? `${val.slice(0, length)}...` : val;
