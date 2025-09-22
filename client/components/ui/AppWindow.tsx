@@ -3,9 +3,9 @@ import React, { useState } from "react";
 type Props = { mode?: 'home' | 'settings' };
 
 export default function AppWindow({ mode = 'home' }: Props) {
-  type Item = { description: string; link: string; fileName: string };
+  type Item = { label: string; description: string; link: string; fileName: string };
   const [items, setItems] = useState<Item[]>(() =>
-    Array.from({ length: 40 }, () => ({ description: "", link: "", fileName: "" }))
+    Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "" }))
   );
 
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
