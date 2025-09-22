@@ -599,7 +599,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                   const total = breakdown.reduce((s, b) => s + b.amt, 0);
 
                   return (
-                    <div className="mb-3 p-3 bg-yellow-50 border-l-4 border-amber-400 text-slate-800">
+                    <div className="mb-3 pt-3 pr-3 pl-3 pb-1.5 bg-yellow-50 border-l-4 border-amber-400 text-slate-800">
                       <div className="font-medium">Uwaga — sumowanie SU</div>
                       <div className="text-sm mt-1">Wybrane umowy ({list}) będą sumowane przy wyliczaniu świadczenia SU.</div>
                       <div className="text-sm mt-2">
