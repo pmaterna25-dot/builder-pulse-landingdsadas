@@ -11,6 +11,11 @@ export default function AppWindow({ mode = 'home' }: Props) {
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
+  const truncatePreview = (val?: string, length = 8) => {
+    if (!val) return "";
+    return val.length > length ? `${val.slice(0, length)}...` : val;
+  };
+
   const handleChange = (idx: number, field: keyof Item, value: string) => {
     setItems((prev) => {
       const copy = prev.slice();
