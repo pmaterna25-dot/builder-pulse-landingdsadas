@@ -517,13 +517,17 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                         {title ? <div className="font-semibold text-[15px] text-slate-800">{title}</div> : null}
                         <div className="text-sm text-slate-700">
                           {contentLines.map((ln, j) => {
+                            const raw = ln;
                             const t = ln.trim();
+                            // handle lines that are indented (start with spaces) and contain OWU
                             if (t.startsWith('OWU:')) {
+                              // detect indentation
+                              const indent = raw.startsWith('  ') ? 'ml-4' : '';
                               return (
-                                <div key={j}><span className="font-semibold">OWU:</span> {t.slice(4).trim()}</div>
+                                <div key={j} className={indent}><span className="font-semibold">OWU:</span> {t.slice(4).trim()}</div>
                               );
                             }
-                            return <div key={j}>{t}</div>;
+                            return <div key={j}>{raw}</div>;
                           })}
                         </div>
                       </div>
