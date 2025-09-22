@@ -7,7 +7,21 @@ export default function Index() {
   const [exampleFromServer, setExampleFromServer] = useState("");
   const [tab, setTab] = useState<'home' | 'settings'>('home');
 
-  const [items, setItems] = useState(() => Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' })));
+  const [items, setItems] = useState(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? localStorage.getItem('app_items_v1') : null;
+      if (raw) return JSON.parse(raw);
+    } catch (e) {
+      // ignore
+    }
+    return Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' }));
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('app_items_v1', JSON.stringify(items));
+    } catch (e) {}
+  }, [items]);
 
   // Fetch users on component mount
   useEffect(() => {
