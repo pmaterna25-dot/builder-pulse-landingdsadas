@@ -357,7 +357,8 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       (item.description || "").toLowerCase().includes(q) ||
       (item.link || "").toLowerCase().includes(q) ||
       (item.fileName || "").toLowerCase().includes(q) ||
-      (`pozycja ${idx + 1}`).includes(q)
+      (`pozycja ${idx + 1}`).includes(q) ||
+      ((item.tags || []).some(tag => tag.toLowerCase().includes(q)))
     );
   });
 
