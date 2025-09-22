@@ -17,6 +17,11 @@ export default function AppWindow({ mode = 'home' }: Props) {
   };
 
   const handleChange = (idx: number, field: keyof Item, value: string) => {
+    // enforce label max length 30
+    if (field === 'label') {
+      value = value.slice(0, 30);
+    }
+
     setItems((prev) => {
       const copy = prev.slice();
       copy[idx] = { ...copy[idx], [field]: value };
