@@ -27,7 +27,7 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+    <div className="min-h-screen flex items-center justify-center app-background">
       <div className="flex flex-col items-center gap-6">
         <div className="flex gap-3">
           <button
