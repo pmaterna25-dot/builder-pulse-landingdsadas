@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 
-type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber' };
+type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber'; selectedSlot?: 'left' | 'mid' | 'right' | null };
 
 type Props = { mode?: 'home' | 'settings'; editable?: boolean; items?: Item[]; setItems?: React.Dispatch<React.SetStateAction<Item[]>> };
 
