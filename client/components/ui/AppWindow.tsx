@@ -92,7 +92,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
             <div aria-hidden className="h-20 border-2 border-slate-800 bg-white" />
           </div>
 
-          <div aria-hidden className="flex-1 border-2 border-slate-800 bg-white" />
+          <div aria-hidden className="flex-1 border-2 border-slate-800 bg-white min-w-0" />
         </div>
       </div>
     </div>
