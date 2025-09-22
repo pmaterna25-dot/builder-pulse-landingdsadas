@@ -89,7 +89,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
             <div aria-hidden className="h-14 border-2 border-slate-800 bg-white" />
 
             <div className="flex-1 border-2 border-slate-800 bg-white p-2 min-h-0">
-              {mode === 'settings' ? (
+              {true ? (
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
                   {items.map((item, idx) => (
                     <div key={idx} className={`mb-3 border rounded p-3 min-h-[100px] relative ${bgFor(item.color)}`}>
