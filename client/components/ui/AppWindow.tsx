@@ -33,7 +33,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
 
             <div className="flex-1 border-2 border-slate-800 bg-white p-2 min-h-0">
               {mode === 'settings' ? (
-                <div className="h-full overflow-y-auto pr-2">
+                <div className="h-full overflow-y-auto pr-2 min-w-0">
                   {items.map((item, idx) => (
                     <div key={idx} className="mb-3 border rounded p-4 bg-white min-h-[150px]">
                       <div className="flex items-start justify-between">
