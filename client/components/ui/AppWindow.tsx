@@ -58,9 +58,10 @@ export default function AppWindow({ mode = 'home' }: Props) {
                               onChange={(e) => handleChange(idx, 'label', e.target.value)}
                               className="text-sm border rounded px-2 py-1 w-64 text-center"
                               placeholder="Nazwa pozycji"
+                              maxLength={30}
                             />
                           ) : (
-                            <div className="text-xs text-slate-500">{truncatePreview(item.label) || 'Za co odpowiada ten box — krótki opis.'}</div>
+                            <div className="text-xs text-slate-500">{(item.label || 'Za co odpowiada ten box — krótki opis.').slice(0,30)}</div>
                           )}
                         </div>
                       </div>
