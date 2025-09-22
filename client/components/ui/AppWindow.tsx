@@ -159,7 +159,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       return true;
     });
     if (invalid.length > 0) {
-      alert(`Nie można pobrać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają umowę dodatkową LUXMED bez włączonej umowy podstawowej.`);
+      alert(`Nie można pobrać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają tag "luxmed" bez włączonej umowy podstawowej.`);
       return;
     }
 
