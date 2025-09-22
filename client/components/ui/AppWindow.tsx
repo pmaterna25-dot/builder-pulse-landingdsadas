@@ -134,6 +134,16 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   };
 
   const downloadPackageAsZip = async (pkg: SavedPackage) => {
+    // Validate that package doesn't include items where additional Luxmed is set without base contract
+    const invalid = (pkg.selectedIndices || []).filter((i) => {
+      const it = items[i];
+      return it && it.umowaDodatkowaLuxmed && !it.umowaWystepujacaPrzy;
+    });
+    if (invalid.length > 0) {
+      alert(`Nie można pobrać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają umowę dodatkową LUXMED bez włączonej umowy podstawowej.`);
+      return;
+    }
+
     try {
       await loadScript('https://cdn.jsdelivr.net/npm/jszip@3.10.0/dist/jszip.min.js');
       const JSZip = (window as any).JSZip;
