@@ -41,7 +41,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                         <div className="text-xs text-slate-500 max-w-[65%] text-right">Za co odpowiada ten box — krótki opis.</div>
                       </div>
 
-                      <div className="flex gap-3 mt-3">
+                      <div className="flex gap-3 mt-3 min-w-0">
                         <div className="flex-1">
                           <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
                             <div className="bg-blue-500 rounded-full p-3 mb-3 inline-flex">
