@@ -44,9 +44,20 @@ export default function AppWindow({ mode = 'home' }: Props) {
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
                   {items.map((item, idx) => (
                     <div key={idx} className="mb-3 border rounded p-4 bg-white min-h-[150px] relative">
-                      <div className="flex items-start justify-between">
-                        <div className="text-sm font-medium text-slate-700">Pozycja {idx + 1}</div>
-                        <div className="text-xs text-slate-500 max-w-[65%] text-right">Za co odpowiada ten box — krótki opis.</div>
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center gap-3">
+                          <div className="text-sm font-medium text-slate-700">Pozycja {idx + 1}</div>
+                          {editingIndex === idx ? (
+                            <input
+                              value={item.label}
+                              onChange={(e) => handleChange(idx, 'label', e.target.value)}
+                              className="text-sm border rounded px-2 py-1 w-64 text-center"
+                              placeholder="Nazwa pozycji"
+                            />
+                          ) : (
+                            <div className="text-xs text-slate-500">{truncatePreview(item.label) || 'Za co odpowiada ten box — krótki opis.'}</div>
+                          )}
+                        </div>
                       </div>
 
                       <div className="flex gap-3 mt-3 min-w-0">
