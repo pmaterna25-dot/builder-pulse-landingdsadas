@@ -18,6 +18,7 @@ export default function Index() {
       setExampleFromServer(data.message);
     } catch (error) {
       console.error("Error fetching hello:", error);
+      setExampleFromServer("Błąd połączenia z serwerem");
     }
   };
 
