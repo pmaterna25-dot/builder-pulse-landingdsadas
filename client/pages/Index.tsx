@@ -1,7 +1,6 @@
-import { DemoResponse } from "@shared/api";
+import type { DemoResponse } from "@shared/api";
 import { useEffect, useState } from "react";
 import AppWindow from "@/components/ui/AppWindow";
-import type { DemoResponse } from "@shared/api";
 
 export default function Index() {
   const [exampleFromServer, setExampleFromServer] = useState("");
@@ -41,7 +40,13 @@ export default function Index() {
   useEffect(() => {
     // Only run on client
     if (typeof window === "undefined") return;
-    fetchDemo();
+    (async () => {
+      try {
+        await fetchDemo();
+      } catch (e) {
+        // ignore errors from fetch to avoid unhandled promise rejections
+      }
+    })();
   }, []);
 
   // Example of how to fetch data from the server (if needed)
