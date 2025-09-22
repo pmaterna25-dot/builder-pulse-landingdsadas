@@ -385,6 +385,17 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 <div className="h-full overflow-y-auto pr-2 min-w-0">
                   {filtered.map(({item, idx}) => (
                     <div key={idx} className={`mb-3 border rounded p-3 min-h-[100px] relative ${bgFor(item.color)}`}>
+                      {mode === 'home' ? (
+                        <div className="absolute top-3 left-3 flex items-center gap-2">
+                          <label className="text-xs font-medium">Wpisz SU</label>
+                          <input
+                            type="number"
+                            value={item.suAmount ?? ''}
+                            onChange={(e) => handleChange(idx, 'suAmount', Number(e.target.value || 0))}
+                            className="text-sm border rounded px-2 py-1 w-24"
+                          />
+                        </div>
+                      ) : null}
                       <div className="flex flex-col items-center">
                         <div className="flex items-center gap-3">
                           <div className="text-sm font-medium text-slate-700">Pozycja {idx + 1}</div>
