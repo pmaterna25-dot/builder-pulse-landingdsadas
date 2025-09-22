@@ -5,6 +5,8 @@ import type { DemoResponse } from "@shared/api";
 
 export default function Index() {
   const [exampleFromServer, setExampleFromServer] = useState("");
+  const [tab, setTab] = useState<'home' | 'settings'>('home');
+
   // Fetch users on component mount
   useEffect(() => {
     fetchDemo();
@@ -26,10 +28,18 @@ export default function Index() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
       <div className="flex flex-col items-center gap-6">
         <div className="flex gap-3">
-          <button className="px-4 py-2 bg-slate-800 text-white rounded">Główna strona</button>
-          <button className="px-4 py-2 bg-white border border-slate-300 text-slate-800 rounded">Ustawienia</button>
+          <button
+            onClick={() => setTab('home')}
+            className={`px-4 py-2 rounded ${tab === 'home' ? 'bg-slate-800 text-white' : 'bg-white border border-slate-300 text-slate-800'}`}>
+            Główna strona
+          </button>
+          <button
+            onClick={() => setTab('settings')}
+            className={`px-4 py-2 rounded ${tab === 'settings' ? 'bg-slate-800 text-white' : 'bg-white border border-slate-300 text-slate-800'}`}>
+            Ustawienia
+          </button>
         </div>
-        <AppWindow />
+        <AppWindow mode={tab} />
       </div>
     </div>
   );
