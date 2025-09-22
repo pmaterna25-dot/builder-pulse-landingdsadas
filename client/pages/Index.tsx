@@ -7,6 +7,8 @@ export default function Index() {
   const [exampleFromServer, setExampleFromServer] = useState("");
   const [tab, setTab] = useState<'home' | 'settings'>('home');
 
+  const [items, setItems] = useState(() => Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' })));
+
   // Fetch users on component mount
   useEffect(() => {
     fetchDemo();
@@ -39,7 +41,7 @@ export default function Index() {
             Ustawienia
           </button>
         </div>
-        <AppWindow mode={tab} />
+        <AppWindow mode={tab} editable={tab === 'settings'} items={items} setItems={setItems} />
       </div>
     </div>
   );
