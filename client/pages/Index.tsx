@@ -1,6 +1,7 @@
 import { DemoResponse } from "@shared/api";
 import { useEffect, useState } from "react";
 import AppWindow from "@/components/ui/AppWindow";
+import type { DemoResponse } from "@shared/api";
 
 export default function Index() {
   const [exampleFromServer, setExampleFromServer] = useState("");
