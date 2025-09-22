@@ -109,7 +109,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                             ) : (
                               <>
                                 <div className="font-medium text-sm text-green-600">link do OWU</div>
-                                <div className="text-xs text-slate-500 mt-1 break-all">{item.link || 'https://...'}</div>
+                                <div className="text-xs text-slate-500 mt-1 break-all">{truncatePreview(item.link, 8) || 'https://...'}</div>
                               </>
                             )}
                           </div>
