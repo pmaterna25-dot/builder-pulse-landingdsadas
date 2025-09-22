@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-type Props = { mode?: 'home' | 'settings' };
+type Props = { mode?: 'home' | 'settings'; editable?: boolean };
 
-export default function AppWindow({ mode = 'home' }: Props) {
+export default function AppWindow({ mode = 'home', editable = true }: Props) {
   type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber' };
   const [items, setItems] = useState<Item[]>(() =>
     Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' }))
@@ -10,6 +10,10 @@ export default function AppWindow({ mode = 'home' }: Props) {
 
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  const [hoveredCircleIndex, setHoveredCircleIndex] = useState<number | null>(null);
+  const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
+  const hoverTimer = React.useRef<number | null>(null);
 
   const truncatePreview = (val?: string, length = 8) => {
     if (!val) return "";
@@ -56,6 +60,22 @@ export default function AppWindow({ mode = 'home' }: Props) {
         return 'bg-gradient-to-br from-blue-50 to-blue-200 animate-pulse';
     }
   };
+
+  const onCircleEnter = (idx: number) => {
+    setHoveredCircleIndex(idx);
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setTooltipIndex(idx), 700) as unknown as number;
+  };
+
+  const onCircleLeave = () => {
+    setHoveredCircleIndex(null);
+    if (hoverTimer.current) {
+      window.clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+    setTooltipIndex(null);
+  };
+
 
   return (
     <div className="w-[1100px] h-[700px] bg-white rounded shadow-xl">
