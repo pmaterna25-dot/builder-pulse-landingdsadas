@@ -159,7 +159,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
       return true;
     });
     if (invalid.length > 0) {
-      alert(`Nie można pobrać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają tag "luxmed" bez włączonej umowy podstawowej.`);
+      alert(`Nie można pobrać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) maj�� tag "luxmed" bez włączonej umowy podstawowej.`);
       return;
     }
 
@@ -420,12 +420,17 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                                   <div className="mt-2">
                                     <div className="text-xs text-slate-600 mb-1">Dodatkowe informacje (oddzielaj przecinkami)</div>
                                     <input value={(item.tags || []).join(', ')} onChange={(e) => handleChange(idx, 'tags', e.target.value.split(',').map(s => s.trim()).filter(Boolean))} placeholder="np. luxmed, assistance, śmierć" className="w-full border rounded px-2 py-1 text-sm" />
+                                    <div className="mt-2">
+                                      <div className="text-xs text-slate-600 mb-1">SU (kwota, PLN)</div>
+                                      <input type="number" value={item.suAmount ?? 0} onChange={(e) => handleChange(idx, 'suAmount', Number(e.target.value || 0))} className="w-full border rounded px-2 py-1 text-sm" />
+                                    </div>
                                   </div>
                                 ) : (
-                                  <div className="mt-2 flex flex-wrap gap-1">
+                                  <div className="mt-2 flex flex-wrap gap-1 items-center">
                                     {(item.tags || []).map((t, ti) => (
                                       <button key={ti} onClick={() => setSearch(t)} className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700 hover:bg-slate-200">{t}</button>
                                     ))}
+                                    {item.suAmount ? <div className="ml-2 text-xs bg-amber-100 px-2 py-1 rounded text-amber-800">🛡️ SU: {item.suAmount}</div> : <div className="ml-2 text-xs text-slate-400">➕ Dodaj SU</div>}
                                   </div>
                                 )}
                               </div>
@@ -562,10 +567,31 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 const special = selPos.filter((n) => n >= 1 && n <= 3).sort((a, b) => b - a);
                 if (special.length > 0) {
                   const list = special.map((n) => `Pozycja ${n}`).join(', ');
+                  // compute su breakdown and total for positions 1..3 only
+                  const breakdown = special.map((n) => {
+                    const it = items[n-1];
+                    const amt = Number(it?.suAmount || 0);
+                    const name = it?.label || `Pozycja ${n}`;
+                    return { n, amt, name };
+                  });
+                  const total = breakdown.reduce((s, b) => s + b.amt, 0);
+
                   return (
                     <div className="mb-3 p-3 bg-yellow-50 border-l-4 border-amber-400 text-slate-800">
                       <div className="font-medium">Uwaga — sumowanie SU</div>
-                      <div className="text-sm mt-1">Wybrane umowy ({list}) będą sumowane przy wyliczaniu świadczenia SU. Jeśli wybierzesz np. Pozycja {special.join('+')}, wypłata będzie sumą dla: {special.join(', ')}.</div>
+                      <div className="text-sm mt-1">Wybrane umowy ({list}) będą sumowane przy wyliczaniu świadczenia SU.</div>
+                      <div className="text-sm mt-2">
+                        {breakdown.map((b) => (
+                          <div key={b.n}>Pozycja {b.n} "{b.name}" — SU: {b.amt} PLN</div>
+                        ))}
+                        <div className="font-semibold mt-1">Suma SU: {total} PLN</div>
+                      </div>
+                      {special.includes(3) ? (
+                        <div className="mt-2 text-sm">
+                          <div className="font-medium">Przykład:</div>
+                          <div>Wystąpienie śmierci z tytułu wypadku komunikacyjnego powoduje, że automatycznie jest aktywowana umowa "{items[2]?.label || 'Pozycja 3'}" oraz umowa główna "{items[0]?.label || 'Pozycja 1'}" co daje zwielokrotnienie kwoty.</div>
+                        </div>
+                      ) : null}
                     </div>
                   );
                 }
