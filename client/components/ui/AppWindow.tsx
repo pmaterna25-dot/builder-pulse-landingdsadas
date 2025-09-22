@@ -102,7 +102,8 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     // Validate: umowaDodatkowaLuxmed requires umowaWystepujacaPrzy on the same item
     const invalid = sel.filter((i) => {
       const it = items[i];
-      if (!it.umowaDodatkowaLuxmed) return false;
+      const hasLuxmed = (it.tags || []).some((t) => (t || '').toLowerCase() === 'luxmed');
+      if (!hasLuxmed) return false;
       // valid if same item has base contract
       if (it.umowaWystepujacaPrzy) return false;
       // or valid if reference points to an item with base contract
