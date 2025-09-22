@@ -80,6 +80,17 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     setTooltipIndex(null);
   };
 
+  const onCircleClick = (idx: number, slot: 'left' | 'mid' | 'right') => {
+    // Only selectable on home (non-editable) per requirement
+    if (editable) return;
+    setItems((prev) => {
+      const copy = prev.slice();
+      const current = copy[idx].selectedSlot === slot ? null : slot;
+      copy[idx] = { ...copy[idx], selectedSlot: current };
+      return copy;
+    });
+  };
+
 
   return (
     <div className="w-[1100px] h-[700px] bg-white rounded shadow-xl">
