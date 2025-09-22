@@ -489,21 +489,38 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
               <div className="mb-3 overflow-auto max-h-40">
                 {generatedText ? (
                   generatedText.split('\n\n').map((block, i) => {
-                    const idx = block.indexOf(':');
-                    const title = idx >= 0 ? block.slice(0, idx).trim() : '';
-                    const content = idx >= 0 ? block.slice(idx + 1).trim() : block;
-                    // If content starts with "OWU: ", split and bold label
-                    let owuLabel = null;
-                    let rest = content;
-                    if (content.startsWith('OWU:')) {
-                      owuLabel = 'OWU:';
-                      rest = content.slice(4).trim();
+                    // Support two formats: "Title\nContent" or "Title: Content"
+                    let title = '';
+                    let content = '';
+                    const nl = block.indexOf('\n');
+                    if (nl >= 0) {
+                      title = block.slice(0, nl).trim();
+                      content = block.slice(nl + 1).trim();
+                    } else {
+                      const idx = block.indexOf(':');
+                      if (idx >= 0) {
+                        title = block.slice(0, idx).trim();
+                        content = block.slice(idx + 1).trim();
+                      } else {
+                        content = block;
+                      }
                     }
+
+                    const contentLines = content.split('\n').filter(Boolean);
+
                     return (
                       <div key={i} className="mb-2">
                         {title ? <div className="font-semibold text-[15px] text-slate-800">{title}</div> : null}
                         <div className="text-sm text-slate-700">
-                          {owuLabel ? <span className="font-semibold">{owuLabel}</span> : null} {rest}
+                          {contentLines.map((ln, j) => {
+                            const t = ln.trim();
+                            if (t.startsWith('OWU:')) {
+                              return (
+                                <div key={j}><span className="font-semibold">OWU:</span> {t.slice(4).trim()}</div>
+                              );
+                            }
+                            return <div key={j}>{t}</div>;
+                          })}
                         </div>
                       </div>
                     );
