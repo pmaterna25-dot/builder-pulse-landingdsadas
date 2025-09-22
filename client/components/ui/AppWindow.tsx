@@ -146,7 +146,12 @@ export default function AppWindow({ mode = 'home' }: Props) {
                         <div className="flex-1 min-w-0">
                           <div className="bg-white/80 rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
                             <label className="relative inline-block">
-                              <input type="file" onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                              <input
+                                type="file"
+                                onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])}
+                                disabled={editingIndex !== idx}
+                                className={`absolute inset-0 w-full h-full opacity-0 ${editingIndex === idx ? 'cursor-pointer' : 'pointer-events-none'}`}
+                              />
                               <div className="bg-amber-400 rounded-full p-3 mb-3 inline-flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v9m0-9l3 3m-3-3L9 15" />
