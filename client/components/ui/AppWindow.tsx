@@ -65,15 +65,14 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     }
   };
 
-  const onCircleEnter = (idx: number) => {
-    setHoveredCircleIndex(idx);
+  const onCircleEnter = (idx: number, slot: string) => {
+    setHoveredKey(`${idx}-${slot}`);
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current as number);
-    // show tooltip after 700ms
     hoverTimer.current = window.setTimeout(() => setTooltipIndex(idx), 700) as unknown as number;
   };
 
   const onCircleLeave = () => {
-    setHoveredCircleIndex(null);
+    setHoveredKey(null);
     if (hoverTimer.current) {
       window.clearTimeout(hoverTimer.current as number);
       hoverTimer.current = null;
