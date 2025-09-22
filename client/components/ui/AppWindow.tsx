@@ -297,7 +297,7 @@ export default function AppWindow({
   };
 
   const clearSelections = () => {
-    setItems((prev) => prev.map((it) => ({ ...it, selectedSlots: [] })));
+    setItems((prev) => prev.map((it) => ({ ...it, selectedSlots: [], suAmount: 0 })));
   };
 
   const exportToCSVAndSave = (filename?: string) => {
