@@ -19,6 +19,35 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
   const hoverTimer = useRef<number | null>(null);
 
+  // Generated editor text (right-side panel)
+  const [generatedText, setGeneratedText] = useState<string>("");
+  const generatedRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const generateFromSelections = () => {
+    const selected = items.map((it, idx) => ({ ...it, idx })).filter((it) => it.selectedSlot);
+    if (selected.length === 0) {
+      setGeneratedText("Brak zaznaczonych elementów.");
+      generatedRef.current?.focus();
+      return;
+    }
+
+    const parts = selected.map(({ idx, label, selectedSlot, description, link, fileName }) => {
+      const lines: string[] = [];
+      lines.push(`Pozycja ${idx + 1}${label ? ` - ${label}` : ''}`);
+      if (selectedSlot === 'left') {
+        lines.push(`Opis: ${description || '(brak)'}`);
+      } else if (selectedSlot === 'mid') {
+        lines.push(`Link: ${link || '(brak)'}`);
+      } else if (selectedSlot === 'right') {
+        lines.push(`Plik: ${fileName || '(brak)'}`);
+      }
+      return lines.join('\n');
+    });
+
+    setGeneratedText(parts.join('\n\n'));
+    setTimeout(() => generatedRef.current?.focus(), 50);
+  };
+
   const truncatePreview = (val?: string, length = 8) => {
     if (!val) return "";
     return val.length > length ? `${val.slice(0, length)}...` : val;
