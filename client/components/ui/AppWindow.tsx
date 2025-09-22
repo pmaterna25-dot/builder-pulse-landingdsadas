@@ -452,10 +452,19 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
               {folderOpen ? (
                 <div className="mt-3 border-t pt-3">
                   <div className="text-sm font-medium mb-2">Folder plików</div>
+
+                  <div className="mb-2">
+                    <input value={packageName} onChange={(e) => setPackageName(e.target.value)} placeholder="Nazwa pakietu (np. Pawelmaterna)" className="w-full border rounded px-2 py-1 text-sm" />
+                    <div className="flex items-center gap-2 mt-2">
+                      <button onClick={() => savePackage()} className="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Zapisz pakiet</button>
+                      <button onClick={() => { setPackageName(''); }} className="px-3 py-1 bg-slate-200 rounded text-sm">Wyczyść nazwę</button>
+                    </div>
+                  </div>
+
                   {savedFiles.length === 0 ? (
-                    <div className="text-xs text-slate-500">Brak zapisanych plików.</div>
+                    <div className="text-xs text-slate-500 mb-3">Brak zapisanych plików.</div>
                   ) : (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 mb-3">
                       {savedFiles.map((f) => (
                         <div key={f.id} className="flex items-center justify-between bg-slate-50 p-2 rounded">
                           <div className="text-sm">
@@ -471,6 +480,30 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                       ))}
                     </div>
                   )}
+
+                  <div className="border-t pt-3">
+                    <div className="text-sm font-medium mb-2">Zapisane pakiety</div>
+                    {savedPackages.length === 0 ? (
+                      <div className="text-xs text-slate-500">Brak pakietów.</div>
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        {savedPackages.map((p) => (
+                          <div key={p.id} className="flex items-center justify-between bg-slate-50 p-2 rounded">
+                            <div className="text-sm">
+                              <div className="font-medium">{p.name}</div>
+                              <div className="text-xs text-slate-500">{new Date(p.createdAt).toLocaleString()}</div>
+                              <div className="text-xs text-slate-500">Pozycje: {p.selectedIndices.map((i) => i+1).join(', ') || 'brak'}</div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => downloadPackageAsZip(p)} className="px-2 py-1 bg-green-600 text-white rounded text-sm">Pobierz ZIP</button>
+                              <button onClick={() => { setGeneratedText(p.generatedText); setFolderOpen(false); }} className="px-2 py-1 bg-slate-200 rounded text-sm">Otwórz</button>
+                              <button onClick={() => setSavedPackages((prev) => prev.filter((x) => x.id !== p.id))} className="px-2 py-1 bg-red-500 text-white rounded text-sm">Usuń</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               ) : null}
             </div>
