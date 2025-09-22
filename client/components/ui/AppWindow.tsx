@@ -102,10 +102,19 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
     // Validate: umowaDodatkowaLuxmed requires umowaWystepujacaPrzy on the same item
     const invalid = sel.filter((i) => {
       const it = items[i];
-      return it.umowaDodatkowaLuxmed && !it.umowaWystepujacaPrzy;
+      if (!it.umowaDodatkowaLuxmed) return false;
+      // check if base contract is set either on same item or referenced item
+      if (it.umowaWystepujacaPrzy) return true; // has base flag but needs reference? keep simple: require reference when set
+      const ref = typeof it.umowaWystepujacaPrzyRef === 'number' ? it.umowaWystepujacaPrzyRef : null;
+      if (ref !== null) {
+        const target = items[ref];
+        return !(target && target.umowaWystepujacaPrzy);
+      }
+      // no ref provided -> invalid
+      return true;
     });
     if (invalid.length > 0) {
-      alert(`Nie można zapisać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają zaznaczoną umowę dodatkową LUXMED bez włączonej umowy podstawowej.`);
+      alert(`Nie można zapisać pakietu — pozycje (${invalid.map((i) => i+1).join(', ')}) mają zaznaczoną umowę dodatkową LUXMED bez poprawnie ustawionej umowy podstawowej.`);
       return;
     }
 
