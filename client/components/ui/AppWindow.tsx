@@ -205,7 +205,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                       </div>
 
                       {/* Confirmation popover */}
-                      {confirmIndex === idx && (
+                      {confirmIndex === idx && editable && (
                         <div className="absolute bottom-12 right-3 bg-white border rounded shadow p-3 w-40 text-center">
                           <div className="text-sm mb-2">Czy chcesz edytować?</div>
                           <div className="flex justify-between gap-2">
