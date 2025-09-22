@@ -15,7 +15,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  const [hoveredCircleIndex, setHoveredCircleIndex] = useState<number | null>(null);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
   const hoverTimer = useRef<number | null>(null);
 
