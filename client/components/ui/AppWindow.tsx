@@ -435,7 +435,6 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                 <div className="flex items-center gap-2">
                   <button onClick={generateFromSelections} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Generuj</button>
                   <button onClick={clearSelections} className="px-3 py-1 bg-slate-200 rounded text-sm">Odznacz</button>
-                  <button onClick={() => exportToCSVAndSave()} className="px-3 py-1 bg-amber-500 text-white rounded text-sm">Zapisz (.csv)</button>
                   <button onClick={() => { navigator.clipboard?.writeText(generatedText || ""); }} className="px-3 py-1 bg-slate-200 rounded text-sm">Kopiuj</button>
                   <button onClick={() => setFolderOpen((s) => !s)} className="px-3 py-1 bg-slate-100 border rounded text-sm">Folder ({savedFiles.length})</button>
                 </div>
