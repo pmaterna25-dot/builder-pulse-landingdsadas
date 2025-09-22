@@ -113,9 +113,13 @@
       "electron/**",
       "package.json"
     ],
-    "directories": { "output": "dist_electron" },
+    "directories": {
+      "output": "dist_electron"
+    },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "build/icon.ico"
     },
     "nsis": {
