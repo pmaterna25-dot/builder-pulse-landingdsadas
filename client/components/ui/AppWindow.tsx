@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-type Item = { label: string; description: string; link: string; fileName: string; fileId?: string; color?: 'green' | 'blue' | 'amber'; selectedSlots?: ('left'|'mid'|'right')[]; umowaWystepujacaPrzy?: boolean; umowaDodatkowaLuxmed?: boolean; umowaWystepujacaPrzyRef?: number | null };
+type Item = { label: string; description: string; link: string; fileName: string; fileId?: string; color?: 'green' | 'blue' | 'amber'; selectedSlots?: ('left'|'mid'|'right')[]; umowaWystepujacaPrzy?: boolean; tags?: string[]; umowaWystepujacaPrzyRef?: number | null };
 
 type Props = { mode?: 'home' | 'settings'; editable?: boolean; items?: Item[]; setItems?: React.Dispatch<React.SetStateAction<Item[]>> };
 
