@@ -165,7 +165,7 @@ export default function AppWindow({ mode = 'home', editable = true }: Props) {
                         {/* Right card */}
                         <div className="flex-1 min-w-0">
                           <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
-                            <label className="relative inline-block">
+                            <label onMouseEnter={() => onCircleEnter(idx)} onMouseLeave={onCircleLeave} className="relative inline-block">
                               <input
                                 type="file"
                                 onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])}
