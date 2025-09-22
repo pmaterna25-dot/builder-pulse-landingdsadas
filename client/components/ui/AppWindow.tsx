@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 
-type Props = { mode?: 'home' | 'settings'; editable?: boolean };
+import React, { useState, useRef } from "react";
 
-export default function AppWindow({ mode = 'home', editable = true }: Props) {
-  type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber' };
-  const [items, setItems] = useState<Item[]>(() =>
+type Item = { label: string; description: string; link: string; fileName: string; color?: 'green' | 'blue' | 'amber' };
+
+type Props = { mode?: 'home' | 'settings'; editable?: boolean; items?: Item[]; setItems?: React.Dispatch<React.SetStateAction<Item[]>> };
+
+export default function AppWindow({ mode = 'home', editable = true, items: itemsProp, setItems: setItemsProp }: Props) {
+  const [localItems, setLocalItems] = useState<Item[]>(() =>
     Array.from({ length: 40 }, () => ({ label: "Za co odpowiada ten box — krótki opis.", description: "", link: "", fileName: "", color: 'blue' }))
   );
+
+  const items = itemsProp ?? localItems;
+  const setItems = setItemsProp ?? setLocalItems;
 
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const [hoveredCircleIndex, setHoveredCircleIndex] = useState<number | null>(null);
   const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
-  const hoverTimer = React.useRef<number | null>(null);
+  const hoverTimer = useRef<number | null>(null);
 
   const truncatePreview = (val?: string, length = 8) => {
     if (!val) return "";
@@ -63,14 +69,15 @@ export default function AppWindow({ mode = 'home', editable = true }: Props) {
 
   const onCircleEnter = (idx: number) => {
     setHoveredCircleIndex(idx);
-    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current as number);
+    // show tooltip after 700ms
     hoverTimer.current = window.setTimeout(() => setTooltipIndex(idx), 700) as unknown as number;
   };
 
   const onCircleLeave = () => {
     setHoveredCircleIndex(null);
     if (hoverTimer.current) {
-      window.clearTimeout(hoverTimer.current);
+      window.clearTimeout(hoverTimer.current as number);
       hoverTimer.current = null;
     }
     setTooltipIndex(null);
