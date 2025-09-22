@@ -11,18 +11,36 @@ export default function Index() {
 
   // Fetch users on component mount
   useEffect(() => {
+    // Only run on client
+    if (typeof window === 'undefined') return;
     fetchDemo();
   }, []);
 
   // Example of how to fetch data from the server (if needed)
   const fetchDemo = async () => {
+    const setError = (msg: string) => setExampleFromServer(msg);
+
     try {
-      const response = await fetch("/api/demo");
+      const response = await fetch('/api/demo', { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = (await response.json()) as DemoResponse;
       setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-      setExampleFromServer("Błąd połączenia z serwerem");
+      return;
+    } catch (err) {
+      // Try a direct Netlify function path as a fallback
+      try {
+        const alt = await fetch('/.netlify/functions/api/demo', { cache: 'no-store' });
+        if (alt.ok) {
+          const data = (await alt.json()) as DemoResponse;
+          setExampleFromServer(data.message);
+          return;
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      // Final fallback: use a friendly local message without throwing
+      setError('Tryb offline — brak dostępu do /api/demo');
     }
   };
 
