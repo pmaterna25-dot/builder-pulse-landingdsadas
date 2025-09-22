@@ -42,7 +42,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                       </div>
 
                       <div className="flex gap-3 mt-3 min-w-0">
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
                             <div className="bg-blue-500 rounded-full p-3 mb-3 inline-flex">
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,7 +54,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                           </div>
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
                             <div className="bg-green-500 rounded-full p-3 mb-3 inline-flex">
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +66,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
                           </div>
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="bg-white rounded-lg shadow-md p-4 h-full flex flex-col items-center justify-center text-center">
                             <div className="bg-amber-400 rounded-full p-3 mb-3 inline-flex">
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
