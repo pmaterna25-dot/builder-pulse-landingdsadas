@@ -82,9 +82,9 @@ export default function AppWindow({ mode = 'home' }: Props) {
                                 maxLength={30}
                               />
                               <div className="flex items-center gap-2 ml-3">
-                                <button aria-label="green" onClick={() => setColor(idx, 'green')} className="w-6 h-6 rounded-full bg-green-500 ring-2 ring-white shadow-sm animate-pulse" />
-                                <button aria-label="blue" onClick={() => setColor(idx, 'blue')} className="w-6 h-6 rounded-full bg-blue-500 ring-2 ring-white shadow-sm animate-pulse" />
-                                <button aria-label="amber" onClick={() => setColor(idx, 'amber')} className="w-6 h-6 rounded-full bg-amber-400 ring-2 ring-white shadow-sm animate-pulse" />
+                                <button aria-label="green" onClick={() => setColor(idx, 'green')} className="w-6 h-6 rounded-full bg-green-500 ring-2 ring-white shadow-sm" />
+                                <button aria-label="blue" onClick={() => setColor(idx, 'blue')} className="w-6 h-6 rounded-full bg-blue-500 ring-2 ring-white shadow-sm" />
+                                <button aria-label="amber" onClick={() => setColor(idx, 'amber')} className="w-6 h-6 rounded-full bg-amber-400 ring-2 ring-white shadow-sm" />
                               </div>
                             </>
                           ) : (
