@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import React, { useState } from "react";
-
 type Props = { mode?: 'home' | 'settings' };
 
 export default function AppWindow({ mode = 'home' }: Props) {
