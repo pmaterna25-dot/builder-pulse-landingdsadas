@@ -20,7 +20,7 @@ export default function AppWindow({ mode = 'home' }: Props) {
           <div className="w-1/3 flex flex-col gap-4 min-h-0">
             <div aria-hidden className="h-20 border-2 border-slate-800 bg-white" />
 
-            <div className="flex-1 border-2 border-slate-800 bg-white p-2">
+            <div className="flex-1 border-2 border-slate-800 bg-white p-2 min-h-0">
               {mode === 'settings' ? (
                 <div className="h-full overflow-y-auto pr-2">
                   {items.map((val, idx) => (
