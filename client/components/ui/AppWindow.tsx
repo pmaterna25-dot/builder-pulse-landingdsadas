@@ -121,7 +121,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                         {/* Left card */}
                         <div className="flex-1 min-w-0">
                           <div className="bg-white/80 rounded-lg shadow-md p-3 h-full flex flex-col items-center justify-center text-center">
-                            <div onMouseEnter={() => onCircleEnter(idx)} onMouseLeave={onCircleLeave} className={`bg-blue-500 rounded-full p-2 mb-2 inline-flex ${hoveredCircleIndex===idx? 'scale-105 shadow-lg' : ''}`}>
+                            <div onMouseEnter={() => onCircleEnter(idx, 'left')} onMouseLeave={onCircleLeave} className={`bg-blue-500 rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-left`? 'scale-105 shadow-lg' : ''}`}>
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-3l-2-2H9L7 5H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
                               </svg>
