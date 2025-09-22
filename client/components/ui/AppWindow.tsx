@@ -173,8 +173,8 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
                               <input
                                 type="file"
                                 onChange={(e) => handleFileChange(idx, e.target.files && e.target.files[0])}
-                                disabled={editingIndex !== idx}
-                                className={`absolute inset-0 w-full h-full opacity-0 ${editingIndex === idx ? 'cursor-pointer' : 'pointer-events-none'}`}
+                                disabled={!editable || editingIndex !== idx}
+                                className={`absolute inset-0 w-full h-full opacity-0 ${(editable && editingIndex === idx) ? 'cursor-pointer' : 'pointer-events-none'}`}
                               />
                               <div className={`bg-amber-400 rounded-full p-2 mb-2 inline-flex ${hoveredKey===`${idx}-right`? 'scale-105 shadow-lg' : ''}`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
