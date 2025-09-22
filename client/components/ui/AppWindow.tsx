@@ -87,10 +87,7 @@ export default function AppWindow({ mode = 'home', editable = true, items: items
   const savePackage = (name?: string) => {
     const sel = items.map((it, idx) => ({ it, idx })).filter(({ it }) => it.selectedSlot).map(({ idx }) => idx);
     const pkgName = (name || packageName || `package_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}` ).trim();
-    const fileIds = items.filter((it) => it.selectedSlot && it.fileName).map((it) => {
-      const f = savedFiles.find((s) => s.name === it.fileName);
-      return f ? f.id : null;
-    }).filter(Boolean) as string[];
+    const fileIds = items.filter((it) => it.selectedSlot && it.fileName).map((it) => it.fileId).filter(Boolean) as string[];
 
     const newPkg: SavedPackage = { id: String(Date.now()), name: pkgName, createdAt: Date.now(), selectedIndices: sel, generatedText: generatedText || '', fileIds };
     setSavedPackages((prev) => [newPkg, ...prev]);
